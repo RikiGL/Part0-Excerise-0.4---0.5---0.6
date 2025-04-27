@@ -1,0 +1,40 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa
+    activate server
+    server-->>browser: spa - HTML document
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate server
+    server-->>browser: main.css file
+    deactivate server
+
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+    activate server
+    server-->>browser: spa.js JS file
+    deactivate server
+
+    Note right of browser: The browser starts executing the JavaScript code that fetches the JSON from the server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: [{ " "content": "g", "date": "2025-04-26T17:50:33.959Z" " }, ... ]
+    deactivate server
+
+
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    activate server
+
+    Note right of browser: The browser no longer sends HTTP requests
+    Note left of server:  The POST request goes to the new_note_spa address
+
+    server-->>browser: HTTP 201 Created
+    Note left of server: The server does not request a redirect and does not send any further HTTP requests.
+
+    Note right of browser: When creating a new note, it re-renders the list of notes on the page and only sends the new note to the server
+    deactivate server
